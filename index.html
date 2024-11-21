@@ -12,9 +12,18 @@
         <canvas id="canvas"></canvas>
       </div>
       <div class="board">
-        <button id="start">Start</button>
-        <button id="pause">Pause</button>
-        <button id="random">Random</button>
+        <div>
+          <button id="start">Start</button>
+          <button id="pause">Pause</button>
+          <button id="random">Random</button>
+        </div>
+        <div>
+          <p>
+            Alive: <span id="alive">0</span>, Dead: <span id="dead">0</span>,
+            Total: <span id="total">0</span>, Generation:
+            <span id="generation">0</span>
+          </p>
+        </div>
       </div>
     </div>
     <script type="module" src="src/main.js"></script>

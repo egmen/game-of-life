@@ -11,7 +11,7 @@ export class Game {
 
   random() {
     this.cells = Array.from({ length: this.width }).map(() =>
-      Array.from({ length: this.height }).map(() => Math.random() > 0.9)
+      Array.from({ length: this.height }).map(() => Math.random() > 0.5)
     );
   }
 
@@ -33,8 +33,21 @@ export class Game {
       })
     );
   }
-
   getLiveNeighborsCount(xIndex, yIndex) {
+    const diff = [-1, 0, 1];
+    const neighboursDiffs = diff
+      .map((xDiff) => diff.map((yDiff) => [xDiff, yDiff]))
+      .flat()
+      .filter(([xDiff, yDiff]) => xDiff !== 0 || yDiff !== 0);
+
+    return neighboursDiffs
+      .map(([xDiff, yDiff]) =>
+        this.cells.at(xIndex + xDiff)?.at(yIndex + yDiff)
+      )
+      .filter((isLive) => isLive).length;
+  }
+
+  getLiveNeighborsCount1(xIndex, yIndex) {
     const diff = [-1, 0, 1];
     return diff
       .map((xDiff) =>

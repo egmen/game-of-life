@@ -7,6 +7,8 @@ export class GameBoard {
   canvas;
   cellSize = 5;
 
+  generation = 0;
+
   constructor(canvas) {
     this.canvas = canvas;
     this.canvas.parentElement.addEventListener(
@@ -15,6 +17,10 @@ export class GameBoard {
     );
     this.game = new Game();
     this.resizeCanvas();
+  }
+
+  get gameSize() {
+    return this.game.width * this.game.height;
   }
 
   resizeCanvas() {
@@ -34,18 +40,31 @@ export class GameBoard {
   }
 
   draw() {
-    this.game.cells.forEach((row, rowIndex) => {
-      row.forEach((cell, colIndex) => {
+    let alive = 0;
+    this.game.cells.forEach((row, x) => {
+      row.forEach((cell, y) => {
         if (cell) {
-          this.drawCell(rowIndex, colIndex);
+          alive++;
+          this.drawCell(y, x);
         }
       });
     });
+    document.getElementById("alive").innerHTML = `${alive} (${(
+      (alive / this.gameSize) *
+      100
+    ).toFixed(1)}%)`;
+    document.getElementById("dead").innerHTML = `${this.gameSize - alive} (${(
+      (1 - alive / this.gameSize) *
+      100
+    ).toFixed(1)}%)`;
+    document.getElementById(
+      "total"
+    ).innerHTML = `${this.game.width}x${this.game.height}=${this.gameSize}`;
   }
 
-  drawCell(rowIndex, colIndex) {
-    const x = colIndex * this.cellSize;
-    const y = rowIndex * this.cellSize;
+  drawCell(xIndex, yIndex) {
+    const x = yIndex * this.cellSize;
+    const y = xIndex * this.cellSize;
     this.canvasCtx.fillStyle = "green";
     this.canvasCtx.fillRect(x, y, this.cellSize, this.cellSize);
   }
@@ -56,6 +75,8 @@ export class GameBoard {
 
   nextMove() {
     this.game.next();
+    this.generation++;
+    document.getElementById("generation").innerHTML = this.generation;
     this.redraw();
   }
 
@@ -69,6 +90,7 @@ export class GameBoard {
   }
 
   random() {
+    this.generation = 0;
     this.game.random();
     this.redraw();
   }
