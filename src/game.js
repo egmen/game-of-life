@@ -4,15 +4,21 @@ export class Game {
   setGameSize(width, height) {
     this.width = width;
     this.height = height;
-    this.cells = Array.from({ length: width }).map(() =>
-      Array.from({ length: height })
+    this.clear();
+  }
+
+  fill(callback) {
+    this.cells = Array.from({ length: this.width }).map(() =>
+      Array.from({ length: this.height }).map(callback)
     );
   }
 
   random() {
-    this.cells = Array.from({ length: this.width }).map(() =>
-      Array.from({ length: this.height }).map(() => Math.random() > 0.5)
-    );
+    this.fill(() => Math.random() > 0.5);
+  }
+
+  clear() {
+    this.fill(() => false);
   }
 
   next() {

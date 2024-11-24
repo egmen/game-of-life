@@ -15,5 +15,3 @@ document.querySelector("#pause").addEventListener("click", () => {
 document.querySelector("#random").addEventListener("click", () => {
   gameBoard.random();
 });
-
-gameBoard.random();

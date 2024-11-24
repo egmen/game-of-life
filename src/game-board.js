@@ -15,8 +15,33 @@ export class GameBoard {
       "resize",
       this.resizeCanvas.bind(this)
     );
+    this.canvas.addEventListener("click", this.onClick.bind(this));
     this.game = new Game();
     this.resizeCanvas();
+  }
+
+  drawShip(headX, headY) {
+    const sheep = [
+      [1, 1, 0],
+      [1, 0, 1],
+      [1, 0, 0],
+    ];
+
+    sheep.forEach((row, yDiff) => {
+      row.forEach((cell, xDiff) => {
+        if (cell) {
+          this.game.cells[headX + xDiff][headY + yDiff] = true;
+        }
+      });
+    });
+  }
+
+  onClick(event) {
+    const x = Math.floor(event.offsetX / this.cellSize);
+    const y = Math.floor(event.offsetY / this.cellSize);
+
+    this.drawShip(x, y);
+    this.redraw();
   }
 
   get gameSize() {
